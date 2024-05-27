@@ -14,60 +14,60 @@ void init_partitions() {
     }
 }
 
-// int fixedsize_memory_management() {
-//     init_partitions();
+int fixedsize_memory_management() {
+    init_partitions();
     
-//     printf("----- Print partitions after init ----- \n");
-//     print_memory_blocks();
+    printf("----- Print partitions after init ----- \n");
+    print_memory_blocks();
 
-//     //메모리 할당 시도
-//     void *mem1 = fixed_allocate_memory();
-//     if (mem1 != NULL) {
-//         printf("Allocated memory at %p\n", mem1);
-//     }
+    //메모리 할당 시도
+    void *mem1 = fixed_allocate_memory();
+    if (mem1 != NULL) {
+        printf("Allocated memory at %p\n", mem1);
+    }
 
-//     printf("----- Print partitions after allocation ----- \n");
-//     print_memory_blocks();
+    printf("----- Print partitions after allocation ----- \n");
+    print_memory_blocks();
 
-//     //메모리 해제
-//     fixed_free_memory(mem1);
-//     printf("Memory at %p freed\n", mem1);
+    //메모리 해제
+    fixed_free_memory(mem1);
+    printf("Memory at %p freed\n", mem1);
 
-//     printf("----- Print partitions after free ----- \n");
-//     print_memory_blocks();
+    printf("----- Print partitions after free ----- \n");
+    print_memory_blocks();
 
-//     return 0;
-// }
+    return 0;
+}
 
-// void* fixed_allocate_memory() {
-//     for(int i = 0; i < MAX_MEM_BLOCKS; i++) {
-//         if(!memory_blocks[i].in_use_flag) {
-//             memory_blocks[i].addr = malloc(PARTITION_SIZE);
-//             fprintf(stderr, "Try to allocate memory for partitions[%d]\n", i);
-//             if (!memory_blocks[i].addr) { //할당 실패
-//                fprintf(stderr, "Failed to allocate memory for partition[%d]\n", i);
-//                return NULL;
-//             }
-//             memset(memory_blocks[i].addr, 0, PARTITION_SIZE); //memory_blocks[i]에 0으로 세팅. 메모리 크기 한 조각의 크기
-//             return memory_blocks[i].addr;
-//         }
-//     }
-//     //여기 까지오면 에러. 잘 실행된거면 for문에서 리턴 됐어야함.
-//     fprintf(stderr, "No available memory partitions\n");
-//     return NULL;
-// }
+void* fixed_allocate_memory() {
+    for(int i = 0; i < MAX_MEM_BLOCKS; i++) {
+        if(!memory_blocks[i].in_use_flag) {
+            memory_blocks[i].addr = malloc(PARTITION_SIZE);
+            fprintf(stderr, "Try to allocate memory for partitions[%d]\n", i);
+            if (!memory_blocks[i].addr) { //할당 실패
+               fprintf(stderr, "Failed to allocate memory for partition[%d]\n", i);
+               return NULL;
+            }
+            memset(memory_blocks[i].addr, 0, PARTITION_SIZE); //memory_blocks[i]에 0으로 세팅. 메모리 크기 한 조각의 크기
+            return memory_blocks[i].addr;
+        }
+    }
+    //여기 까지오면 에러. 잘 실행된거면 for문에서 리턴 됐어야함.
+    fprintf(stderr, "No available memory partitions\n");
+    return NULL;
+}
 
-// void fixed_free_memory(void *memory) {
-//     for(int i = 0; i < MAX_MEM_BLOCKS; i++) {
-//         if (memory_blocks[i].addr == memory) {
-//             free(memory_blocks[i].addr);
-//             memory_blocks[i].addr = NULL;
-//             return;
-//         } 
-//     }
-//     fprintf(stderr, "Attempted to free a non-allocated partition\n");
-//     return;
-// }
+void fixed_free_memory(void *memory) {
+    for(int i = 0; i < MAX_MEM_BLOCKS; i++) {
+        if (memory_blocks[i].addr == memory) {
+            free(memory_blocks[i].addr);
+            memory_blocks[i].addr = NULL;
+            return;
+        } 
+    }
+    fprintf(stderr, "Attempted to free a non-allocated partition\n");
+    return;
+}
 
 //사이즈를 받고 할당하고 id 리턴
 int dyna_alloc(size_t size,  Process process) {
@@ -92,6 +92,7 @@ int dyna_alloc(size_t size,  Process process) {
             }
         }
     }
+    printf("\n");
     printf("Best index: %d\n", best_idx);
     if(best_idx == -1) {
         return -1;
@@ -129,8 +130,7 @@ int dyna_alloc(size_t size,  Process process) {
 
 //id받아서 할당
 void dyna_free(int free_id) {
-    // int found = 0;
-
+    
     for(int i = 0; i < MAX_MEM_BLOCKS; i++) {
         if(memory_blocks[i].in_use_flag && memory_blocks[i].block_id == free_id) {
             free(memory_blocks[i].addr);
@@ -138,16 +138,8 @@ void dyna_free(int free_id) {
             memory_blocks[i].block_id = 0;
             memory_blocks[i].in_use_flag = 0;
             memory_blocks[i].size = 0;
-            // found = 1;
         }
     }
-    // if(found) {
-    //     fprintf(stderr, "Freed allocated partition\n");
-    //     print_memory_blocks();
-    // }
-    // else {
-    //     fprintf(stderr, "Attempted to free a non-allocated partition\n");
-    // }
 }
 
 void update_free_spaces() {
