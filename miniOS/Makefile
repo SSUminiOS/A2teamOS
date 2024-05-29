@@ -1,8 +1,8 @@
 # Compiler and Compiler Flags
 CC=gcc
-CFLAGS=-Wall -g -Iinclude
+CFLAGS=-Wall -g -Iinclude `pkg-config --cflags gtk+-3.0`
 # Linker flags
-LDFLAGS=-lreadline -lm
+LDFLAGS=-lreadline -lpthread `pkg-config --libs gtk+-3.0`
 
 # The build target executable:
 TARGET=minios
