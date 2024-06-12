@@ -16,7 +16,7 @@ typedef struct {
     size_t size;
 } Process;
 
-Process create_default_process();
+Process createDefaultProcess();
 
 void round_robin(Process *processes, int num_processes, int quantum, char (*gantt_chart)[100], int *count);
 void fcfs(Process *processes, int num_processes, char (*gantt_chart)[100], int *count);
@@ -24,6 +24,7 @@ void sjf(Process *processes, int num_processes, char (*gantt_chart)[100], int *c
 void srtf(Process *processes, int num_processes, char (*gantt_chart)[100], int *count);
 void priority_scheduling(Process *processes, int num_processes, char (*gantt_chart)[100], int *count);
 
+// void round_robin(Process *processes, int num_processes, int quantum);
 int schedule();
 
 #endif
