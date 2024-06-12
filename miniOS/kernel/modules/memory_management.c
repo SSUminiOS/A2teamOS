@@ -130,7 +130,6 @@ int dyna_alloc(size_t size,  Process process) {
 
 //id받아서 할당
 void dyna_free(int free_id) {
-    
     for(int i = 0; i < MAX_MEM_BLOCKS; i++) {
         if(memory_blocks[i].in_use_flag && memory_blocks[i].block_id == free_id) {
             free(memory_blocks[i].addr);
@@ -140,6 +139,7 @@ void dyna_free(int free_id) {
             memory_blocks[i].size = 0;
         }
     }
+    printf("\n");
 }
 
 void update_free_spaces() {
